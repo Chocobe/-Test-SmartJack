@@ -1,29 +1,6 @@
-# menu-project
+# Smart Jack 코딩 테스트
 
-## Project setup
-```
-npm install
-```
+* 지원자: **김영우**
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+<br/>
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
