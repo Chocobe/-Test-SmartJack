@@ -1,0 +1,13 @@
+/**
+ * @author: 김영우
+ * @description:
+ *    * flex(): flex 관련 설정을 위한 mixin 입니다.
+ */
+
+@mixin flex($justify: center, $align: center, $wrap: nowrap, $direction: row) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-wrap: $wrap;
+  flex-direction: $direction;
+}

@@ -1,0 +1,20 @@
+/**
+ * @author: 김영우
+ * @description:
+ *    * 리셋 스타일 입니다.
+ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  color: #03a9f4;
+  text-decoration: none;
+}

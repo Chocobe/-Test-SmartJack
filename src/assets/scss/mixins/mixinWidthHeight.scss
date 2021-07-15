@@ -1,0 +1,10 @@
+/**
+ * @author: 김영우
+ * @description:
+ *    * width-height(): width 와 height 스타일용 mixin 입니다.
+ */
+
+@mixin width-height($width: 100%, $height: auto) {
+  width: $width;
+  height: $height;
+}
