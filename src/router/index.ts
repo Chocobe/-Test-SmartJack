@@ -6,7 +6,11 @@ Vue.use(VueRouter);
 const routes: Array<RouteConfig> = [
 	{
 		path: "/:id",
-		name: "Home",
+		component: () =>
+			import(/* webpackChunkName: "Ly_Default" */ "@/layouts/Ly_Default.vue"),
+	},
+	{
+		path: "/",
 		component: () =>
 			import(/* webpackChunkName: "Ly_Default" */ "@/layouts/Ly_Default.vue"),
 	},
