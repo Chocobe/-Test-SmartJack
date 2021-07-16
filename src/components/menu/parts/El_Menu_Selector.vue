@@ -107,6 +107,7 @@ export default Vue.extend({
 	@include width-height(100%);
 	@include flex(space-between);
 
+	cursor: pointer;
 	position: relative;
 
 	&__title {
