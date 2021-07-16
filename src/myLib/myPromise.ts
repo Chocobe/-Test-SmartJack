@@ -35,65 +35,65 @@ export interface IMyPromise_Task {
 
 export default class MyPromise {
 	// 비동기 상태값
-	#state: Enum_MyPromiseState = Enum_MyPromiseState.PENDING;
+	private state: Enum_MyPromiseState = Enum_MyPromiseState.PENDING;
 	// 비동기 처리 결과값
-	#value: any = null;
+	private value: any = null;
 	// 비동기 처리 함수 Queue
-	#taskQueue: IMyPromise_Task[] = [];
+	private taskQueue: IMyPromise_Task[] = [];
 
 	constructor(callback: (res: IFunc_Resolve, rej: IFunc_Reject) => void) {
 		// 초기 상태 === "pending"
-		this.#state = Enum_MyPromiseState.PENDING;
+		this.state = Enum_MyPromiseState.PENDING;
 		// 빈값을 구별하기 위한, null 초기화
-		this.#value = null;
+		this.value = null;
 		// then() 에 의해 쌓이는 작업 처리 함수 Queue
-		this.#taskQueue = [];
+		this.taskQueue = [];
 
 		try {
 			// callback 내부에서 resolve() 또는 reject() 호출 예정
-			callback(this.#resolve, this.#reject);
+			callback(this.resolve, this.reject);
 		} catch (error) {
-			this.#reject(error);
+			this.reject(error);
 		}
 	} // constructor();
 
 	// "FULFILL" 상태 전환 메서드
-	#resolve = (value: any): void => {
-		this.#updateResult(value, Enum_MyPromiseState.FULFILLED);
+	private resolve = (value: any): void => {
+		this.updateResult(value, Enum_MyPromiseState.FULFILLED);
 	};
 
 	// "REJECT" 상태 전환 메서드
-	#reject = (error: any): void => {
-		this.#updateResult(error, Enum_MyPromiseState.REJECTED);
+	private reject = (error: any): void => {
+		this.updateResult(error, Enum_MyPromiseState.REJECTED);
 	};
 
 	// 상태변경 처리 메서드
-	// 호출자: #resolve(), #reject()
-	#updateResult = (value: any, state: Enum_MyPromiseState) => {
+	// 호출자: resolve(), reject()
+	private updateResult = (value: any, state: Enum_MyPromiseState) => {
 		// Web API로 넘겨서, Task Queue 로써 호출 되도록 setTimeout() 에서 처리
 		setTimeout(() => {
 			// 이미 "상태변경"이 되었던 Promise라면, 처리안함 (종료)
-			if (this.#state !== Enum_MyPromiseState.PENDING) return;
+			if (this.state !== Enum_MyPromiseState.PENDING) return;
 
 			// then(value)의 value가 Promise 객체일 경우 처리
-			if (this.#isThenable(value)) {
-				return value.then(this.#resolve, this.#reject);
+			if (this.isThenable(value)) {
+				return value.then(this.resolve, this.reject);
 			}
 
 			// then(value)의 value가 Promise 객체가 아닐 경우 처리
-			this.#value = value;
-			this.#state = state;
+			this.value = value;
+			this.state = state;
 
 			// 변경시킨 상태로, TaskQueue에 쌓인 함수 실행
 			// (비동기 처리 실행)
-			this.#executeTaskQueue();
+			this.executeTaskQueue();
 		}, 0);
-	}; // #updateResult();
+	}; // updateResult();
 
 	// value의 타입이 Promise인지 검사 메서드
-	#isThenable = function (value: any) {
+	private isThenable = function (value: any) {
 		return value instanceof MyPromise;
-	}; // #isThenable();
+	}; // isThenable();
 
 	// 비동기 처리 함수에 대한 "Task Queue" 등록 및 "Chaining" 객체 반환
 	then(
@@ -114,7 +114,7 @@ export default class MyPromise {
 				} catch (error) {
 					rej(error);
 				}
-			};
+			}; // onSuccess();
 
 			// catch() 처리 함수
 			const onFail: IFunc_Reject = (value: any): void => {
@@ -129,36 +129,36 @@ export default class MyPromise {
 				} catch (error) {
 					rej(error);
 				}
-			};
+			}; // onFail();
 
 			// 새로운 "Task Queue" 등록
-			this.#addTask({ onSuccess, onFail });
+			this.addTask({ onSuccess, onFail });
 		}); // return new MyAxios();
 	} // then();
 
 	// Task Queue 에 Task 등록 메서드
-	#addTask = (task: IMyPromise_Task): void => {
-		this.#taskQueue.push(task);
-		this.#executeTaskQueue();
+	private addTask = (task: IMyPromise_Task): void => {
+		this.taskQueue.push(task);
+		this.executeTaskQueue();
 	};
 
 	// Task Queue 실행 메서드
-	#executeTaskQueue = (): void => {
+	private executeTaskQueue = (): void => {
 		// 호출 시점에 Promise가 Pending 상태면, 실행 종료
-		if (this.#state === Enum_MyPromiseState.PENDING) {
+		if (this.state === Enum_MyPromiseState.PENDING) {
 			return;
 		}
 
-		while (this.#taskQueue.length > 0) {
-			const curTask = this.#taskQueue.pop() as IMyPromise_Task;
+		while (this.taskQueue.length > 0) {
+			const curTask = this.taskQueue.pop() as IMyPromise_Task;
 
-			if (this.#state === Enum_MyPromiseState.FULFILLED) {
-				curTask.onSuccess(this.#value);
+			if (this.state === Enum_MyPromiseState.FULFILLED) {
+				curTask.onSuccess(this.value);
 			} else {
-				curTask.onFail(this.#value);
+				curTask.onFail(this.value);
 			}
 		}
-	}; // #executeTaskQueue()
+	}; // executeTaskQueue()
 
 	catch(onFail: IFunc_OnFail) {
 		return this.then(null, onFail);
