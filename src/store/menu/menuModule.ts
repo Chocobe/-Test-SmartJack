@@ -51,22 +51,28 @@ const menuModule: Module<IMenuStore, IRootStore> = {
 		GET_MENU_LIST(context): MyPromise {
 			const menuResponse: MyPromise = apiGet_Menu();
 
-			menuResponse.then(response => {
-				// 전체 메뉴 저장
-				const menuResponse = response as IMenu_Get_Response;
-				const menuList = menuResponse.menuList;
-				context.commit("setMenuList", menuList);
+			menuResponse
+				.then(response => {
+					// 전체 메뉴 저장
+					const menuResponse = response as IMenu_Get_Response;
+					const menuList = menuResponse.menuList;
+					context.commit("setMenuList", menuList);
 
-				// 대상 메뉴 적용 (새로고침 처리)
-				const curRoute = router.currentRoute.path;
-				const curMenu = menuList.filter(menu => {
-					return curRoute.indexOf(`/${menu.id}`) === 0;
+					// 대상 메뉴 적용 (새로고침 처리)
+					const curRoute = router.currentRoute.path;
+					const curMenu = menuList.filter(menu => {
+						return curRoute.indexOf(`/${menu.id}`) === 0;
+					});
+
+					if (curMenu.length === 1) {
+						context.commit("setTargetMenu", curMenu[0]);
+					}
+				})
+				.catch(error => {
+					alert(
+						`에러 발생: 잠시 후, 다시 시도해 주세요 😯\n에러내역: ${error}`,
+					);
 				});
-
-				if (curMenu.length === 1) {
-					context.commit("setTargetMenu", curMenu[0]);
-				}
-			});
 
 			return menuResponse;
 		},
