@@ -7,7 +7,7 @@
 
 		<!-- 컨텐츠 라이터 영역 -->
 		<main class="mainWrapper">
-			<div class="main__test">Main 테스트 입니다.</div>
+			<Page_DynamicContent></Page_DynamicContent>
 		</main>
 	</div>
 </template>
@@ -16,10 +16,12 @@
 import Vue from "vue";
 
 import Bl_Menu from "@/components/menu/Bl_Menu.vue";
+import Page_DynamicContent from "@/views/Page_DynamicContent.vue";
 
 export default Vue.extend({
 	components: {
 		Bl_Menu,
+		Page_DynamicContent,
 	},
 });
 </script>
