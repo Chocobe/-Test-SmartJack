@@ -24,8 +24,11 @@ export default Vue.extend({
 		},
 
 		targetMenuId(): string {
-			const targetMenu = this.$store.getters["/menu/getTargetMenu"] as IMenu;
-			return targetMenu.id;
+			const targetMenu = this.$store.getters[
+				"/menu/getTargetMenu"
+			] as IMenu | null;
+
+			return targetMenu ? targetMenu.id : "";
 		},
 	},
 
