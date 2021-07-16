@@ -107,6 +107,8 @@ export default Vue.extend({
 	@include width-height(100%);
 	@include flex(space-between);
 
+	position: relative;
+
 	&__title {
 		color: $gray-02;
 	}
