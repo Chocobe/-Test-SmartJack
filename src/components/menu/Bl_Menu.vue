@@ -1,9 +1,10 @@
 <template>
-	<div id="Bl_Menu" class="selector">
+	<div class="menu">
 		<!-- 메뉴 selectBox -->
-		<El_Menu_Selector></El_Menu_Selector>
+		<El_Menu_Selector class="menu__selector"></El_Menu_Selector>
 
-		<!-- TODO 메뉴 목록 컴포넌트 만들기 -->
+		<!-- 메뉴 리스트 -->
+		<El_Menu_List class="menu__list"></El_Menu_List>
 	</div>
 </template>
 
@@ -11,11 +12,13 @@
 import Vue from "vue";
 
 import El_Menu_Selector from "@/components/menu/parts/El_Menu_Selector.vue";
+import El_Menu_List from "@/components/menu/parts/El_Menu_List.vue";
 import { menuModule } from "@/store/menu/menuModule";
 
 export default Vue.extend({
 	components: {
 		El_Menu_Selector,
+		El_Menu_List,
 	},
 
 	methods: {
@@ -41,15 +44,15 @@ export default Vue.extend({
 </script>
 
 <style scoped lang="scss">
-.selector {
+.menu {
 	@include width-height(100%);
-	@include flex(space-between, center, nowrap);
 
-	position: relative;
-	cursor: pointer;
+	&__selector {
+		z-index: 1;
+	}
 
-	.innerWrapper {
-		//
+	&__list {
+		margin-top: 10px;
 	}
 }
 </style>
