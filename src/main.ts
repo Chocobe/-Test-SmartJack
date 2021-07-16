@@ -3,6 +3,10 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+import { initFontawesome } from "@/plugins/fontawesome";
+
+initFontawesome();
+
 Vue.config.productionTip = false;
 
 new Vue({
